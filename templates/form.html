@@ -1,0 +1,65 @@
+<html>
+	<head>
+		<title>
+			IPL Stats
+		</title>
+		    <!-- linking the stylesheet(CSS) -->
+    		<link rel="stylesheet" type="text/css" href="./style.css">
+	</head>
+	<body>
+		<h1>This is form</h1>
+		<form method="POST" action="{{ url_for('form') }}">
+			{{ form.csrf_token }}
+			{{ form.playername.label }}
+			{{ form.playername }}
+			vs
+			{{ form.team2.label }}
+			{{ form.team2 }}
+
+			<br>
+			<br>
+
+			<!-- input tag -->
+		    <input id="searchbar" onkeyup="search_animal()" type="text"
+		        name="search" placeholder="Search animals..">
+		      
+		    <!-- ordered list -->
+<!-- 		    <ol id='list'>
+		        <li class="animals">Cat</li>
+		        <li class="animals">Dog</li>
+		        <li class="animals">Elephant</li>
+		        <li class="animals">Fish</li>
+		        <li class="animals">Gorilla</li>
+		        <li class="animals">Monkey</li>
+		        <li class="animals">Turtle</li>
+		        <li class="animals">Whale</li>
+		        <li class="animals">Aligator</li>
+		        <li class="animals">Donkey</li>
+		        <li class="animals">Horse</li>
+		    </ol> -->
+		      
+		    <!-- linking javscript -->
+		    <script src="./animals.js"></script>
+
+			{{ form.submit }}
+		</form>
+		<script type="text/javascript">
+			// JavaScript code
+			function search_animal() {
+			    let input = document.getElementById('searchbar').value
+			    input=input.toLowerCase();
+			    // let x = document.getElementsByClassName('animals');
+			    var x = ["kl rahul", "Bredon mcculam", "zahir khan", "virat kohli"]
+			      
+			    for (i = 0; i < x.length; i++) { 
+			        if (!x[i].toLowerCase().includes(input)) {
+			            x[i].style.display="none";
+			        }
+			        else {
+			            x[i].style.display="list-item";                 
+			        }
+			    }
+			}
+		</script>
+	</body>
+</html>
