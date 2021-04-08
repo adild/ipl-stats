@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+	* {
+  box-sizing: border-box;
+}
+
+body {
+  font: 16px Arial;  
+}
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+
+input[type=submit] {
+  background-color: DodgerBlue;
+  color: #fff;
+  cursor: pointer;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+
+/* Section */
+.section {
+  clear: both;
+  margin: 0px;
+  padding: 0px;
+}
+/* Column */
+.col {
+  background: #eee;
+  display: block;
+  float:left;
+  margin: 1% 0 1% 1.6%;
+}
+.col:first-child { margin-left: 0 !important; }
+
+/* Row */
+.row:before,
+.row:after { content:""; display:table; }
+.row:after { clear:both;}
+.row { zoom:1; /* For IE 6/7 */ }
+
+/* Grid */
+.grid_1_of_2{ width: 49.2% }
+.grid_2_of_2{ width: 100% }
+
+/* Full Width below 768 pixels */
+@media only screen and (max-width: 768px) {
+  .col {  margin: 1% 0 1% 0%; }
+  [class*='grid_'] { width: 100%; }
+}
+
+header {text-align: center;}
+
+
+</style>
+
+</head>     
+<body>
+
+<header >
+        <form autocomplete="off" method="post" action="{{ url_for('form') }}">
+		  <div class="autocomplete" style="width:300px;">
+		    <input id="playerName" type="text" name="playerName" placeholder="Player Name" required>
+		  </div>
+		    <div class="autocomplete" style="width:300px;">
+		    <input id="AgainstTeam" type="text" name="AgainstTeam" placeholder="Against Team" required>
+		  </div>
+		  <input type="submit">
+		</form>
+</header>
+
+
+<div class="section">
+<div class="col grid_1_of_2">
+
+      <table class="w3-table-all w3-small">
+				<tr>
+					<th>
+						team_playing
+					</th>
+					<th>
+						against
+					</th>
+					<th>
+						runs
+					</th>
+					<th>
+						balls
+					</th>
+					<th>
+						date
+					</th>
+					<th>
+						city
+					</th>
+					<th>
+						vanue
+					</th>
+				</tr>
+				{% for i in res %}
+				<tr>
+					<td>
+						{{i[1]}}
+					</td>
+					<td>
+						{{i[2]}}
+					</td>
+					<td>
+						{{i[3]}}
+					</td>
+					<td>
+						{{i[4]}}
+					</td>
+					<td>
+						{{i[5]}}
+					</td>
+					<td>
+						{{i[6]}}
+					</td>
+					<td>
+						{{i[7]}}
+					</td>
+					<td>
+						{{i[8]}}
+					</td>
+				</tr>
+				{%endfor%}
+			</table>
+
+</div>
+<div class="col grid_1_of_2"> 
+
+      <table class="w3-table-all w3-small">
+				<tr>
+					<th>
+						team_playing
+					</th>
+					<th>
+						against
+					</th>
+					<th>
+						runs
+					</th>
+					<th>
+						balls
+					</th>
+					<th>
+						date
+					</th>
+					<th>
+						city
+					</th>
+					<th>
+						vanue
+					</th>
+				</tr>
+				{% for i in res2 %}
+				<tr>
+					<td>
+						{{i[1]}}
+					</td>
+					<td>
+						{{i[2]}}
+					</td>
+					<td>
+						{{i[3]}}
+					</td>
+					<td>
+						{{i[4]}}
+					</td>
+					<td>
+						{{i[5]}}
+					</td>
+					<td>
+						{{i[6]}}
+					</td>
+					<td>
+						{{i[7]}}
+					</td>
+					<td>
+						{{i[8]}}
+					</td>
+				</tr>
+				{%endfor%}
+			</table>
+
+</div>
+</div>
+
+<script>
+function autocomplete(inp, arr) {
+  /*the autocomplete function takes two arguments,
+  the text field element and an array of possible autocompleted values:*/
+  var currentFocus;
+  /*execute a function when someone writes in the text field:*/
+  inp.addEventListener("input", function(e) {
+      var a, b, i, val = this.value;
+      /*close any already open lists of autocompleted values*/
+      closeAllLists();
+      if (!val) { return false;}
+      currentFocus = -1;
+      /*create a DIV element that will contain the items (values):*/
+      a = document.createElement("DIV");
+      a.setAttribute("id", this.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      /*append the DIV element as a child of the autocomplete container:*/
+      this.parentNode.appendChild(a);
+      /*for each item in the array...*/
+      for (i = 0; i < arr.length; i++) {
+        /*check if the item starts with the same letters as the text field value:*/
+        if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+          /*create a DIV element for each matching element:*/
+          b = document.createElement("DIV");
+          /*make the matching letters bold:*/
+          b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+          b.innerHTML += arr[i].substr(val.length);
+          /*insert a input field that will hold the current array item's value:*/
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          /*execute a function when someone clicks on the item value (DIV element):*/
+          b.addEventListener("click", function(e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  });
+  /*execute a function presses a key on the keyboard:*/
+  inp.addEventListener("keydown", function(e) {
+      var x = document.getElementById(this.id + "autocomplete-list");
+      if (x) x = x.getElementsByTagName("div");
+      if (e.keyCode == 40) {
+        /*If the arrow DOWN key is pressed,
+        increase the currentFocus variable:*/
+        currentFocus++;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 38) { //up
+        /*If the arrow UP key is pressed,
+        decrease the currentFocus variable:*/
+        currentFocus--;
+        /*and and make the current item more visible:*/
+        addActive(x);
+      } else if (e.keyCode == 13) {
+        /*If the ENTER key is pressed, prevent the form from being submitted,*/
+        e.preventDefault();
+        if (currentFocus > -1) {
+          /*and simulate a click on the "active" item:*/
+          if (x) x[currentFocus].click();
+        }
+      }
+  });
+  function addActive(x) {
+    /*a function to classify an item as "active":*/
+    if (!x) return false;
+    /*start by removing the "active" class on all items:*/
+    removeActive(x);
+    if (currentFocus >= x.length) currentFocus = 0;
+    if (currentFocus < 0) currentFocus = (x.length - 1);
+    /*add class "autocomplete-active":*/
+    x[currentFocus].classList.add("autocomplete-active");
+  }
+  function removeActive(x) {
+    /*a function to remove the "active" class from all autocomplete items:*/
+    for (var i = 0; i < x.length; i++) {
+      x[i].classList.remove("autocomplete-active");
+    }
+  }
+  function closeAllLists(elmnt) {
+    /*close all autocomplete lists in the document,
+    except the one passed as an argument:*/
+    var x = document.getElementsByClassName("autocomplete-items");
+    for (var i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  /*execute a function when someone clicks in the document:*/
+  document.addEventListener("click", function (e) {
+      closeAllLists(e.target);
+  });
+}
+
+/*An array containing all the country names in the world:*/
+var players = ["RT Ponting", "BB McCullum", "DJ Hussey", "Mohammad Hafeez",
+       "SC Ganguly", "CL White", "MV Boucher", "B Akhil", "AA Noffke",
+       "P Kumar", "Z Khan", "SB Joshi", "W Jaffer", "JH Kallis",
+       "R Dravid", "V Kohli", "K Goel", "MEK Hussey", "JR Hopes",
+       "SK Raina", "JDP Oram", "S Badrinath", "PA Patel", "ML Hayden",
+       "MS Dhoni", "KC Sangakkara", "Yuvraj Singh", "SM Katich",
+       "IK Pathan", "T Kohli", "YK Pathan", "S Dhawan", "G Gambhir",
+       "SK Warne", "D Salunkhe", "SK Trivedi", "V Sehwag", "SR Watson",
+       "M Kaif", "DS Lehmann", "RA Jadeja", "M Rawat", "L Ronchi",
+       "ST Jayasuriya", "DJ Thornely", "RV Uthappa", "PR Shah",
+       "AM Nayar", "SM Pollock", "Harbhajan Singh", "S Chanderpaul",
+       "LRPL Taylor", "WP Saha", "AS Yadav", "A Symonds", "SB Bangar",
+       "WPUJC Vaas", "RP Singh", "AC Gilchrist", "Y Venugopal Rao",
+       "VVS Laxman", "RG Sharma", "SB Styris", "LR Shukla", "PP Chawla",
+       "Kamran Akmal", "DPMD Jayawardene", "S Sohal", "B Lee", "WA Mota",
+       "Shahid Afridi", "DJ Bravo", "A Nehra", "MA Khote", "GC Smith",
+       "Pankaj Singh", "S Sreesanth", "VRV Singh", "SS Tiwary",
+       "RR Sarwan", "DS Kulkarni", "R Vinay Kumar", "M Kartik",
+       "I Sharma", "AB Agarkar", "AM Rahane", "TM Srivastava",
+       "Shoaib Malik", "MK Tiwary", "KD Karthik", "R Bhatia",
+       "MF Maharoof", "VY Mahesh", "B Chipli", "DW Steyn", "DB Das",
+       "MK Pandey", "HH Gibbs", "DNT Zoysa", "D Kalyankrishna",
+       "SE Marsh", "SA Asnodkar", "BJ Hodge", "Sohail Tanvir",
+       "Salman Butt", "Umar Gul", "AB Dinda", "AB de Villiers",
+       "SP Fleming", "S Vidyut", "JA Morkel", "LPC Silva", "DB Ravi Teja",
+       "Misbah-ul-Haq", "PJ Sangwan", "YV Takawale", "RR Raje",
+       "Mohammad Asif", "GD McGrath", "Joginder Sharma", "MS Gony",
+       "M Muralitharan", "M Ntini", "DT Patil", "A Kumble", "S Anirudha",
+       "MM Patel", "CK Kapugedera", "A Chopra", "T Taibu", "J Arunkumar",
+       "PP Ojha", "SP Goswami", "SR Tendulkar", "U Kaul", "Niraj Patel",
+       "AD Mascarenhas", "TM Dilshan", "A Mishra", "LA Pomersbach",
+       "Iqbal Abdulla", "Younis Khan", "PM Sarvesh Kumar",
+       "DP Vijaykumar", "Shoaib Akhtar", "Abdur Razzak", "H Das",
+       "DR Smith", "SD Chitnis", "CRD Fernando", "VS Yeligati",
+       "L Balaji", "A Mukund", "RR Powar", "JP Duminy", "A Flintoff",
+       "T Thushara", "KP Pietersen", "JD Ryder", "T Henderson",
+       "Kamran Khan", "RS Bopara", "MC Henriques", "CH Gayle",
+       "R Bishnoi", "KV Sharma", "FH Edwards", "AS Raut", "PC Valthaty",
+       "RJ Quiney", "Yashpal Singh", "M Manhas", "AA Bilakhia",
+       "AN Ghosh", "BAW Mendis", "DL Vettori", "MN van Wyk",
+       "RE van der Merwe", "TL Suman", "Shoaib Ahmed", "GR Napier",
+       "KP Appanna", "LA Carseldine", "NV Ojha", "SM Harwood", "M Vijay",
+       "DA Warner", "SB Jakati", "RJ Harris", "D du Preez", "M Morkel",
+       "AD Mathews", "SL Malinga", "C Nanda", "J Botha",
+       "Mashrafe Mortaza", "A Singh", "GJ Bailey", "AB McDonald",
+       "Y Nagar", "SS Shaikh", "R Ashwin", "Mohammad Ashraful",
+       "Jaskaran Singh", "Anirudh Singh", "CA Pujara", "OA Shah",
+       "AP Tare", "AT Rayudu", "R Sathish", "R McLaren",
+       "AA Jhunjhunwala", "P Dogra", "A Uniyal", "MS Bisla", "YA Abdulla",
+       "EJG Morgan", "JM Kemp", "S Tyagi", "RS Gavaskar", "SE Bond",
+       "S Ladda", "DP Nannes", "KA Pollard", "DR Martyn", "S Narwal",
+       "MJ Lumb", "Bipul Sharma", "AB Barath", "FY Fazal", "AC Voges",
+       "MD Mishra", "UT Yadav", "J Theron", "SJ Srivastava", "R Sharma",
+       "Mandeep Singh", "KM Jadhav", "SW Tait", "KB Arun Karthik",
+       "KAJ Roach", "PD Collingwood", "CK Langeveldt", "VS Malik",
+       "A Mithun", "AP Dole", "AN Ahmed", "RS Sodhi", "DE Bollinger",
+       "S Sriram", "B Sumanth", "C Madan", "AG Paunikar", "MR Marsh",
+       "AJ Finch", "STR Binny", "Harmeet Singh", "IR Jaggi",
+       "DT Christian", "MA Agarwal", "RV Gomez", "AUK Pathan",
+       "UBT Chand", "DJ Jacobs", "NJ Rimmington", "Sunny Singh",
+       "AL Menaria", "WD Parnell", "JJ van der Wath", "R Ninan",
+       "S Aravind", "MS Wade", "TD Paine", "JEC Franklin", "SB Wagh",
+       "AC Thomas", "Shakib Al Hasan", "DH Yagnik", "S Randiv",
+       "BJ Haddin", "NLTC Perera", "NL McCullum", "JE Taylor",
+       "J Syed Mohammad", "RN ten Doeschate", "TR Birt", "AG Murtaza",
+       "Harpreet Singh", "M Klinger", "AC Blizzard", "I Malhotra",
+       "L Ablish", "CA Ingram", "S Nadeem", "P Parameswaran",
+       "CJ Ferguson", "VR Aaron", "AA Chavan", "ND Doshi", "B Kumar",
+       "Y Gnaneswara Rao", "S Rana", "BA Bhatt", "F du Plessis",
+       "RE Levi", "GJ Maxwell", "SPD Smith", "SA Yadav", "MN Samuels",
+       "KK Cooper", "JP Faulkner", "HV Patel", "DAJ Bracewell",
+       "DJ Harris", "Ankit Sharma", "SP Narine", "GB Hogg", "RR Bhatkal",
+       "CJ McKay", "N Saini", "DA Miller", "Azhar Mahmood", "P Negi",
+       "RJ Peterson", "KMDN Kulasekara", "A Ashish Reddy",
+       "V Pratap Singh", "BB Samantray", "MJ Clarke", "Gurkeerat Singh",
+       "AP Majumdar", "PA Reddy", "K Upadhyay", "P Awana", "AD Russell",
+       "A Chandila", "CA Lynn", "Sunny Gupta", "MC Juneja", "KK Nair",
+       "GH Vihari", "R Shukla", "MDKJ Perera", "AS Rajpoot", "B Laughlin",
+       "M Vohra", "JD Unadkat", "Mohammed Shami", "BMAJ Mendis",
+       "R Rampaul", "CH Morris", "SV Samson", "SMSM Senanayake",
+       "BJ Rohrer", "KL Rahul", "Q de Kock", "R Dhawan", "MG Johnson",
+       "LJ Wright", "IC Pandey", "CM Gautam", "X Thalaivan Sargunam",
+       "DJG Sammy", "KW Richardson", "MM Sharma", "UA Birla",
+       "Parvez Rasool", "Sandeep Sharma", "S Kaul", "Sachin Baby",
+       "PV Tambe", "NM Coulter-Nile", "CJ Anderson", "NJ Maddinson",
+       "AR Patel", "JJ Bumrah", "JDS Neesham", "TG Southee", "MA Starc",
+       "BR Dunk", "RR Rossouw", "Shivam Sharma", "YS Chahal",
+       "LMP Simmons", "VH Zol", "Imran Tahir", "BCJ Cutting",
+       "BE Hendricks", "S Gopal", "M de Lange", "R Tewatia", "JO Holder",
+       "Karanveer Singh", "SS Iyer", "DJ Hooda", "Anureet Singh",
+       "KS Williamson", "SA Abbott", "J Suchith", "RG More", "D Wiese",
+       "HH Pandya", "SN Khan", "MJ McClenaghan", "DJ Muthuswami",
+       "PJ Cummins", "SN Thakur", "JC Buttler", "CR Brathwaite",
+       "MP Stoinis", "Ishan Kishan", "C Munro", "P Sahu", "KH Pandya",
+       "AD Nath", "MJ Guptill", "KJ Abbott", "TM Head", "M Ashwin",
+       "NS Naik", "RR Pant", "SW Billings", "KC Cariappa",
+       "PSP Handscomb", "Swapnil Singh", "J Yadav", "UT Khawaja",
+       "HM Amla", "F Behardien", "A Zampa", "BB Sran", "N Rana",
+       "S Kaushik", "ER Dwivedi", "CJ Jordan", "A Choudhary", "TS Mills",
+       "BA Stokes", "JJ Roy", "Vishnu Vinod", "Basil Thampi", "CR Woakes",
+       "RA Tripathi", "DL Chahar", "V Shankar", "Rashid Khan",
+       "LH Ferguson", "RD Chahar", "C de Grandhomme", "AF Milne",
+       "S Badree", "Mohammad Nabi", "AJ Tye", "K Rabada", "Kuldeep Yadav",
+       "Washington Sundar", "DM Bravo", "AR Bawne", "SP Jackson",
+       "Ankit Soni", "TA Boult", "E Lewis", "MA Wood", "RK Singh",
+       "DJM Short", "K Gowtham", "TK Curran", "M Markande", "B Stanlake",
+       "Mujeeb Ur Rahman", "A Dananjaya", "Shivam Mavi", "Shubman Gill",
+       "Mohammed Siraj", "H Klaasen", "RK Bhui", "JC Archer", "PP Shaw",
+       "LE Plunkett", "Mustafizur Rahman", "AD Hales", "MK Lomror",
+       "DR Shorey", "MM Ali", "M Prasidh Krishna", "P Chopra",
+       "JPR Scantlebury-Searles", "Abhishek Sharma", "IS Sodhi",
+       "SO Hetmyer", "S Dube", "NA Saini", "JM Bairstow", "Rasikh Salam",
+       "KMA Paul", "N Pooran", "P Ray Barman", "S Lamichhane",
+       "SM Curran", "GC Viljoen", "Avesh Khan", "HF Gurney", "SD Lad",
+       "AS Joseph", "MJ Santner", "R Parag", "JL Denly", "LS Livingstone",
+       "KK Ahmed", "AJ Turner", "SE Rutherford", "Harpreet Brar",
+       "Y Prithvi Raj", "P Simran Singh", "JL Pattinson", "A Nortje",
+       "T Banton", "D Padikkal", "YBK Jaiswal", "RD Gaikwad",
+       "TU Deshpande", "Abdul Samad", "PK Garg", "JR Philippe",
+       "Kartik Tyagi", "CV Varun", "KL Nagarkoti", "I Udana",
+       "Ravi Bishnoi", "Shahbaz Ahmed", "AT Carey", "N Jagadeesan",
+       "T Natarajan", "P Dubey", "SS Cottrell", "Arshdeep Singh",
+       "DR Sams"];
+
+var teams = ["Royal Challengers Bangalore", "Kolkata Knight Riders",
+       "Chennai Super Kings", "Kings XI Punjab", "Delhi Daredevils",
+       "Rajasthan Royals", "Mumbai Indians", "Deccan Chargers",
+       "Kochi Tuskers Kerala", "Pune Warriors",
+       "Sunrisers Hyderabad", "Rising Pune Supergiants", "Gujarat Lions",
+       "Rising Pune Supergiant", "Delhi Capitals"]
+
+/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+autocomplete(document.getElementById("playerName"), players);
+autocomplete(document.getElementById("AgainstTeam"), teams);
+</script>
+
+</body>
+</html>
