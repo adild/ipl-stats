@@ -107,7 +107,7 @@ header {text-align: center;}
 <body>
 
 <header >
-        <form autocomplete="off" method="post" action="{{ url_for('form') }}">
+        <form autocomplete="off" method="post" action="{{ url_for('bowling') }}">
 		  <div class="autocomplete" style="width:300px;">
 		    <input id="playerName" type="text" name="playerName" placeholder="Player Name" required>
 		  </div>
@@ -118,6 +118,7 @@ header {text-align: center;}
 		</form>
 </header>
 
+Bolwer Name - {{inputPlayer}}
 
 <div class="section">
 <div class="col grid_1_of_2">
@@ -136,6 +137,9 @@ header {text-align: center;}
 					<th>
 						balls
 					</th>
+          <th>
+            wickets
+          </th>
 					<th>
 						date
 					</th>
@@ -146,7 +150,7 @@ header {text-align: center;}
 						vanue
 					</th>
 				</tr>
-				{% for i in res %}
+				{% for i in res[::-1] %}
 				<tr>
 					<td>
 						{{i[1]}}
@@ -193,6 +197,9 @@ header {text-align: center;}
 					<th>
 						balls
 					</th>
+          <th>
+            wickets
+          </th>
 					<th>
 						date
 					</th>
@@ -203,7 +210,7 @@ header {text-align: center;}
 						vanue
 					</th>
 				</tr>
-				{% for i in res2 %}
+				{% for i in res2[::-1] %}
 				<tr>
 					<td>
 						{{i[1]}}
@@ -335,129 +342,102 @@ function autocomplete(inp, arr) {
 }
 
 /*An array containing all the country names in the world:*/
-var players = ["RT Ponting", "BB McCullum", "DJ Hussey", "Mohammad Hafeez",
-       "SC Ganguly", "CL White", "MV Boucher", "B Akhil", "AA Noffke",
-       "P Kumar", "Z Khan", "SB Joshi", "W Jaffer", "JH Kallis",
-       "R Dravid", "V Kohli", "K Goel", "MEK Hussey", "JR Hopes",
-       "SK Raina", "JDP Oram", "S Badrinath", "PA Patel", "ML Hayden",
-       "MS Dhoni", "KC Sangakkara", "Yuvraj Singh", "SM Katich",
-       "IK Pathan", "T Kohli", "YK Pathan", "S Dhawan", "G Gambhir",
-       "SK Warne", "D Salunkhe", "SK Trivedi", "V Sehwag", "SR Watson",
-       "M Kaif", "DS Lehmann", "RA Jadeja", "M Rawat", "L Ronchi",
-       "ST Jayasuriya", "DJ Thornely", "RV Uthappa", "PR Shah",
-       "AM Nayar", "SM Pollock", "Harbhajan Singh", "S Chanderpaul",
-       "LRPL Taylor", "WP Saha", "AS Yadav", "A Symonds", "SB Bangar",
-       "WPUJC Vaas", "RP Singh", "AC Gilchrist", "Y Venugopal Rao",
-       "VVS Laxman", "RG Sharma", "SB Styris", "LR Shukla", "PP Chawla",
-       "Kamran Akmal", "DPMD Jayawardene", "S Sohal", "B Lee", "WA Mota",
-       "Shahid Afridi", "DJ Bravo", "A Nehra", "MA Khote", "GC Smith",
-       "Pankaj Singh", "S Sreesanth", "VRV Singh", "SS Tiwary",
-       "RR Sarwan", "DS Kulkarni", "R Vinay Kumar", "M Kartik",
-       "I Sharma", "AB Agarkar", "AM Rahane", "TM Srivastava",
-       "Shoaib Malik", "MK Tiwary", "KD Karthik", "R Bhatia",
-       "MF Maharoof", "VY Mahesh", "B Chipli", "DW Steyn", "DB Das",
-       "MK Pandey", "HH Gibbs", "DNT Zoysa", "D Kalyankrishna",
-       "SE Marsh", "SA Asnodkar", "BJ Hodge", "Sohail Tanvir",
-       "Salman Butt", "Umar Gul", "AB Dinda", "AB de Villiers",
-       "SP Fleming", "S Vidyut", "JA Morkel", "LPC Silva", "DB Ravi Teja",
-       "Misbah-ul-Haq", "PJ Sangwan", "YV Takawale", "RR Raje",
-       "Mohammad Asif", "GD McGrath", "Joginder Sharma", "MS Gony",
-       "M Muralitharan", "M Ntini", "DT Patil", "A Kumble", "S Anirudha",
-       "MM Patel", "CK Kapugedera", "A Chopra", "T Taibu", "J Arunkumar",
-       "PP Ojha", "SP Goswami", "SR Tendulkar", "U Kaul", "Niraj Patel",
-       "AD Mascarenhas", "TM Dilshan", "A Mishra", "LA Pomersbach",
-       "Iqbal Abdulla", "Younis Khan", "PM Sarvesh Kumar",
-       "DP Vijaykumar", "Shoaib Akhtar", "Abdur Razzak", "H Das",
-       "DR Smith", "SD Chitnis", "CRD Fernando", "VS Yeligati",
-       "L Balaji", "A Mukund", "RR Powar", "JP Duminy", "A Flintoff",
-       "T Thushara", "KP Pietersen", "JD Ryder", "T Henderson",
-       "Kamran Khan", "RS Bopara", "MC Henriques", "CH Gayle",
-       "R Bishnoi", "KV Sharma", "FH Edwards", "AS Raut", "PC Valthaty",
-       "RJ Quiney", "Yashpal Singh", "M Manhas", "AA Bilakhia",
-       "AN Ghosh", "BAW Mendis", "DL Vettori", "MN van Wyk",
-       "RE van der Merwe", "TL Suman", "Shoaib Ahmed", "GR Napier",
-       "KP Appanna", "LA Carseldine", "NV Ojha", "SM Harwood", "M Vijay",
-       "DA Warner", "SB Jakati", "RJ Harris", "D du Preez", "M Morkel",
-       "AD Mathews", "SL Malinga", "C Nanda", "J Botha",
-       "Mashrafe Mortaza", "A Singh", "GJ Bailey", "AB McDonald",
-       "Y Nagar", "SS Shaikh", "R Ashwin", "Mohammad Ashraful",
-       "Jaskaran Singh", "Anirudh Singh", "CA Pujara", "OA Shah",
-       "AP Tare", "AT Rayudu", "R Sathish", "R McLaren",
-       "AA Jhunjhunwala", "P Dogra", "A Uniyal", "MS Bisla", "YA Abdulla",
-       "EJG Morgan", "JM Kemp", "S Tyagi", "RS Gavaskar", "SE Bond",
-       "S Ladda", "DP Nannes", "KA Pollard", "DR Martyn", "S Narwal",
-       "MJ Lumb", "Bipul Sharma", "AB Barath", "FY Fazal", "AC Voges",
-       "MD Mishra", "UT Yadav", "J Theron", "SJ Srivastava", "R Sharma",
-       "Mandeep Singh", "KM Jadhav", "SW Tait", "KB Arun Karthik",
-       "KAJ Roach", "PD Collingwood", "CK Langeveldt", "VS Malik",
-       "A Mithun", "AP Dole", "AN Ahmed", "RS Sodhi", "DE Bollinger",
-       "S Sriram", "B Sumanth", "C Madan", "AG Paunikar", "MR Marsh",
-       "AJ Finch", "STR Binny", "Harmeet Singh", "IR Jaggi",
-       "DT Christian", "MA Agarwal", "RV Gomez", "AUK Pathan",
-       "UBT Chand", "DJ Jacobs", "NJ Rimmington", "Sunny Singh",
-       "AL Menaria", "WD Parnell", "JJ van der Wath", "R Ninan",
-       "S Aravind", "MS Wade", "TD Paine", "JEC Franklin", "SB Wagh",
-       "AC Thomas", "Shakib Al Hasan", "DH Yagnik", "S Randiv",
-       "BJ Haddin", "NLTC Perera", "NL McCullum", "JE Taylor",
-       "J Syed Mohammad", "RN ten Doeschate", "TR Birt", "AG Murtaza",
-       "Harpreet Singh", "M Klinger", "AC Blizzard", "I Malhotra",
-       "L Ablish", "CA Ingram", "S Nadeem", "P Parameswaran",
-       "CJ Ferguson", "VR Aaron", "AA Chavan", "ND Doshi", "B Kumar",
-       "Y Gnaneswara Rao", "S Rana", "BA Bhatt", "F du Plessis",
-       "RE Levi", "GJ Maxwell", "SPD Smith", "SA Yadav", "MN Samuels",
-       "KK Cooper", "JP Faulkner", "HV Patel", "DAJ Bracewell",
-       "DJ Harris", "Ankit Sharma", "SP Narine", "GB Hogg", "RR Bhatkal",
-       "CJ McKay", "N Saini", "DA Miller", "Azhar Mahmood", "P Negi",
-       "RJ Peterson", "KMDN Kulasekara", "A Ashish Reddy",
-       "V Pratap Singh", "BB Samantray", "MJ Clarke", "Gurkeerat Singh",
-       "AP Majumdar", "PA Reddy", "K Upadhyay", "P Awana", "AD Russell",
-       "A Chandila", "CA Lynn", "Sunny Gupta", "MC Juneja", "KK Nair",
-       "GH Vihari", "R Shukla", "MDKJ Perera", "AS Rajpoot", "B Laughlin",
-       "M Vohra", "JD Unadkat", "Mohammed Shami", "BMAJ Mendis",
-       "R Rampaul", "CH Morris", "SV Samson", "SMSM Senanayake",
-       "BJ Rohrer", "KL Rahul", "Q de Kock", "R Dhawan", "MG Johnson",
-       "LJ Wright", "IC Pandey", "CM Gautam", "X Thalaivan Sargunam",
-       "DJG Sammy", "KW Richardson", "MM Sharma", "UA Birla",
-       "Parvez Rasool", "Sandeep Sharma", "S Kaul", "Sachin Baby",
-       "PV Tambe", "NM Coulter-Nile", "CJ Anderson", "NJ Maddinson",
-       "AR Patel", "JJ Bumrah", "JDS Neesham", "TG Southee", "MA Starc",
-       "BR Dunk", "RR Rossouw", "Shivam Sharma", "YS Chahal",
-       "LMP Simmons", "VH Zol", "Imran Tahir", "BCJ Cutting",
-       "BE Hendricks", "S Gopal", "M de Lange", "R Tewatia", "JO Holder",
-       "Karanveer Singh", "SS Iyer", "DJ Hooda", "Anureet Singh",
-       "KS Williamson", "SA Abbott", "J Suchith", "RG More", "D Wiese",
-       "HH Pandya", "SN Khan", "MJ McClenaghan", "DJ Muthuswami",
-       "PJ Cummins", "SN Thakur", "JC Buttler", "CR Brathwaite",
-       "MP Stoinis", "Ishan Kishan", "C Munro", "P Sahu", "KH Pandya",
-       "AD Nath", "MJ Guptill", "KJ Abbott", "TM Head", "M Ashwin",
-       "NS Naik", "RR Pant", "SW Billings", "KC Cariappa",
-       "PSP Handscomb", "Swapnil Singh", "J Yadav", "UT Khawaja",
-       "HM Amla", "F Behardien", "A Zampa", "BB Sran", "N Rana",
-       "S Kaushik", "ER Dwivedi", "CJ Jordan", "A Choudhary", "TS Mills",
-       "BA Stokes", "JJ Roy", "Vishnu Vinod", "Basil Thampi", "CR Woakes",
-       "RA Tripathi", "DL Chahar", "V Shankar", "Rashid Khan",
-       "LH Ferguson", "RD Chahar", "C de Grandhomme", "AF Milne",
-       "S Badree", "Mohammad Nabi", "AJ Tye", "K Rabada", "Kuldeep Yadav",
-       "Washington Sundar", "DM Bravo", "AR Bawne", "SP Jackson",
-       "Ankit Soni", "TA Boult", "E Lewis", "MA Wood", "RK Singh",
-       "DJM Short", "K Gowtham", "TK Curran", "M Markande", "B Stanlake",
-       "Mujeeb Ur Rahman", "A Dananjaya", "Shivam Mavi", "Shubman Gill",
-       "Mohammed Siraj", "H Klaasen", "RK Bhui", "JC Archer", "PP Shaw",
-       "LE Plunkett", "Mustafizur Rahman", "AD Hales", "MK Lomror",
-       "DR Shorey", "MM Ali", "M Prasidh Krishna", "P Chopra",
-       "JPR Scantlebury-Searles", "Abhishek Sharma", "IS Sodhi",
-       "SO Hetmyer", "S Dube", "NA Saini", "JM Bairstow", "Rasikh Salam",
-       "KMA Paul", "N Pooran", "P Ray Barman", "S Lamichhane",
-       "SM Curran", "GC Viljoen", "Avesh Khan", "HF Gurney", "SD Lad",
-       "AS Joseph", "MJ Santner", "R Parag", "JL Denly", "LS Livingstone",
-       "KK Ahmed", "AJ Turner", "SE Rutherford", "Harpreet Brar",
-       "Y Prithvi Raj", "P Simran Singh", "JL Pattinson", "A Nortje",
-       "T Banton", "D Padikkal", "YBK Jaiswal", "RD Gaikwad",
-       "TU Deshpande", "Abdul Samad", "PK Garg", "JR Philippe",
-       "Kartik Tyagi", "CV Varun", "KL Nagarkoti", "I Udana",
-       "Ravi Bishnoi", "Shahbaz Ahmed", "AT Carey", "N Jagadeesan",
-       "T Natarajan", "P Dubey", "SS Cottrell", "Arshdeep Singh",
-       "DR Sams"];
+var players = ["AA Noffke", "Z Khan", "JH Kallis", "SB Joshi", "CL White",
+       "P Kumar", "AB Agarkar", "SC Ganguly", "LR Shukla", "I Sharma",
+       "AB Dinda", "JDP Oram", "JR Hopes", "MS Gony", "K Goel",
+       "PP Chawla", "WA Mota", "IK Pathan", "S Sreesanth", "B Lee",
+       "M Muralitharan", "P Amarnath", "Joginder Sharma", "GD McGrath",
+       "B Geeves", "SK Warne", "YK Pathan", "D Salunkhe", "SR Watson",
+       "SK Trivedi", "DL Vettori", "MF Maharoof", "MM Patel", "R Bhatia",
+       "B Akhil", "R Vinay Kumar", "A Nehra", "SM Pollock", "DS Kulkarni",
+       "AM Nayar", "Harbhajan Singh", "ST Jayasuriya", "WPUJC Vaas",
+       "RP Singh", "SB Styris", "SB Bangar", "DJ Hussey",
+       "Mohammad Hafeez", "M Kartik", "PP Ojha", "A Symonds",
+       "Pankaj Singh", "Mohammad Asif", "VY Mahesh", "Shahid Afridi",
+       "MA Khote", "DJ Bravo", "VS Yeligati", "D Kalyankrishna",
+       "VRV Singh", "A Kumble", "Sohail Tanvir", "DNT Zoysa",
+       "SD Chitnis", "Shoaib Malik", "Yuvraj Singh", "DW Steyn",
+       "JA Morkel", "CRD Fernando", "V Sehwag", "V Kohli",
+       "Gagandeep Singh", "Y Venugopal Rao", "Umar Gul", "M Ntini",
+       "PJ Sangwan", "DP Vijaykumar", "DB Ravi Teja", "LPC Silva",
+       "DJ Thornely", "RR Raje", "SK Raina", "S Vidyut", "L Balaji",
+       "CK Kapugedera", "DR Smith", "AD Mascarenhas", "A Mishra",
+       "Shoaib Akhtar", "Iqbal Abdulla", "RR Powar", "PM Sarvesh Kumar",
+       "Abdur Razzak", "RA Jadeja", "TM Dilshan", "RG Sharma", "A Nel",
+       "BAW Mendis", "A Flintoff", "T Thushara", "SL Malinga",
+       "T Henderson", "Kamran Khan", "JD Ryder", "DP Nannes", "AM Salvi",
+       "YA Abdulla", "VS Malik", "Harmeet Singh", "FH Edwards",
+       "MC Henriques", "CH Gayle", "KP Pietersen", "LRPL Taylor",
+       "RS Bopara", "MK Tiwary", "Anureet Singh", "RR Bose", "KP Appanna",
+       "Shoaib Ahmed", "BJ Hodge", "SR Tendulkar", "RE van der Merwe",
+       "JP Duminy", "S Tyagi", "GR Napier", "SM Harwood", "AS Raut",
+       "SB Jakati", "D du Preez", "TL Suman", "RJ Harris", "A Singh",
+       "M Morkel", "LA Carseldine", "A Mithun", "C Nanda", "SS Sarkar",
+       "AD Mathews", "AM Rahane", "J Botha", "Mashrafe Mortaza",
+       "AB McDonald", "Y Nagar", "CK Langeveldt", "R Ashwin", "RA Shaikh",
+       "Jaskaran Singh", "AA Jhunjhunwala", "A Uniyal", "SW Tait",
+       "AG Murtaza", "R Sathish", "R McLaren", "RS Gavaskar", "JM Kemp",
+       "S Ladda", "Bipul Sharma", "SE Bond", "KA Pollard", "S Narwal",
+       "UT Yadav", "SJ Srivastava", "AC Voges", "R Sharma", "J Theron",
+       "NLTC Perera", "KAJ Roach", "PD Collingwood", "C Ganapathy",
+       "MB Parmar", "DE Bollinger", "SB Wagh", "JD Unadkat", "AP Dole",
+       "AN Ahmed", "FY Fazal", "MR Marsh", "L Ablish", "S Sriram",
+       "AJ Finch", "STR Binny", "ND Doshi", "S Randiv", "TG Southee",
+       "AL Menaria", "DT Christian", "AUK Pathan", "RV Gomez",
+       "JEC Franklin", "WD Parnell", "M Manhas", "AC Thomas",
+       "NJ Rimmington", "RN ten Doeschate", "S Nadeem", "BA Bhatt",
+       "R Ninan", "JJ van der Wath", "S Aravind", "Shakib Al Hasan",
+       "PC Valthaty", "S Dhawan", "J Syed Mohammad", "VR Aaron",
+       "JE Taylor", "NL McCullum", "KMDN Kulasekara", "P Parameswaran",
+       "I Malhotra", "B Chipli", "B Kumar", "AA Kazi", "Anand Rajan",
+       "AA Chavan", "P Prasanth", "Y Gnaneswara Rao", "S Rana",
+       "JP Faulkner", "SS Mundhe", "RW Price", "GJ Maxwell", "M de Lange",
+       "MN Samuels", "KK Cooper", "DAJ Bracewell", "HV Patel",
+       "Ankit Sharma", "DJ Harris", "TP Sudhindra", "F du Plessis",
+       "SP Narine", "GB Hogg", "RR Bhatkal", "P Awana", "V Pratap Singh",
+       "CJ McKay", "A Ashish Reddy", "AD Russell", "Azhar Mahmood",
+       "A Chandila", "P Negi", "LJ Wright", "RJ Peterson", "R Shukla",
+       "MJ Clarke", "BW Hilfenhaus", "SPD Smith", "K Upadhyay",
+       "Sunny Gupta", "MG Johnson", "JJ Bumrah", "S Badree", "AS Rajpoot",
+       "B Laughlin", "GH Vihari", "Mohammed Shami", "BMAJ Mendis",
+       "CH Morris", "Harmeet Singh (2)", "S Kaul", "R Dhawan",
+       "MM Sharma", "R Rampaul", "SMSM Senanayake", "KV Sharma",
+       "JO Holder", "IC Pandey", "Sandeep Sharma", "YS Chahal",
+       "DJG Sammy", "KW Richardson", "P Suyal", "PV Tambe", "BJ Rohrer",
+       "Parvez Rasool", "MG Neser", "NM Coulter-Nile", "AC Gilchrist",
+       "CJ Anderson", "MA Starc", "JDS Neesham", "AR Patel", "M Vijay",
+       "R Tewatia", "SA Yadav", "Shivam Sharma", "Imran Tahir",
+       "V Shankar", "LMP Simmons", "BCJ Cutting", "S Gopal", "K Santokie",
+       "BE Hendricks", "PJ Cummins", "JW Hastings", "Karanveer Singh",
+       "DJ Muthuswami", "TA Boult", "SA Abbott", "KC Cariappa",
+       "DJ Hooda", "J Suchith", "RG More", "MJ McClenaghan", "D Wiese",
+       "HH Pandya", "SN Thakur", "GS Sandhu", "Gurkeerat Singh",
+       "J Yadav", "BB Sran", "M Ashwin", "CR Brathwaite", "C Munro",
+       "MP Stoinis", "P Sahu", "Mustafizur Rahman", "AF Milne",
+       "Kuldeep Yadav", "KH Pandya", "KJ Abbott", "T Shamsi", "S Kaushik",
+       "SM Boland", "Swapnil Singh", "CJ Jordan", "A Zampa",
+       "Sachin Baby", "N Rana", "DL Chahar", "KS Williamson", "TM Head",
+       "A Choudhary", "TS Mills", "Rashid Khan", "BA Stokes", "CR Woakes",
+       "T Natarajan", "RD Chahar", "B Stanlake", "Basil Thampi",
+       "Tejas Baroka", "C de Grandhomme", "AJ Tye", "LH Ferguson",
+       "Mohammad Nabi", "Mohammed Siraj", "K Rabada", "Washington Sundar",
+       "SS Agarwal", "NB Singh", "RA Tripathi", "Ankit Soni", "MJ Henry",
+       "Avesh Khan", "MA Wood", "M Markande", "Mujeeb Ur Rahman",
+       "K Khejroliya", "K Gowtham", "DJM Short", "TK Curran",
+       "A Dananjaya", "Shivam Mavi", "JC Archer", "LE Plunkett",
+       "IS Sodhi", "MK Lomror", "KM Asif", "L Ngidi", "DJ Willey",
+       "M Prasidh Krishna", "MM Ali", "JPR Scantlebury-Searles",
+       "S Lamichhane", "CJ Dala", "KK Ahmed", "NA Saini", "S Dube",
+       "Rasikh Salam", "KMA Paul", "SM Curran", "CV Varun", "GC Viljoen",
+       "Mandeep Singh", "P Ray Barman", "MJ Santner", "JP Behrendorff",
+       "SC Kuggeleijn", "AS Joseph", "HF Gurney", "S Midhun", "R Parag",
+       "LS Livingstone", "SN Khan", "Abhishek Sharma", "Arshdeep Singh",
+       "Harpreet Brar", "SE Rutherford", "Y Prithvi Raj", "O Thomas",
+       "AS Roy", "S Sandeep Warrier", "JL Pattinson", "SS Cottrell",
+       "A Nortje", "Ravi Bishnoi", "I Udana", "TU Deshpande",
+       "KL Nagarkoti", "Kartik Tyagi", "DR Sams", "Shahbaz Ahmed",
+       "Abdul Samad", "JR Hazlewood", "DA Warner", "CJ Green", "P Dubey",
+       "Monu Kumar"];
 
 var teams = ["Royal Challengers Bangalore", "Kolkata Knight Riders",
        "Chennai Super Kings", "Kings XI Punjab", "Delhi Daredevils",
