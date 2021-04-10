@@ -1,0 +1,4 @@
+pandas
+jupyterlab
+flask
+Flask-WTF
