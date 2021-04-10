@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% extends "base.html" %}
+{% block head %}
+{{super()}}
 
 <style>
 	* {
@@ -102,6 +100,10 @@ header {text-align: center;}
 
 
 </style>
+
+{% endblock %}   
+
+{% block content %}
 
 </head>     
 <body>
@@ -474,3 +476,4 @@ autocomplete(document.getElementById("AgainstTeam"), teams);
 
 </body>
 </html>
+{% endblock %}

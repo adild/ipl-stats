@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% extends "base.html" %}
+{% block head %}
+{{super()}}
 
 <style>
 	* {
@@ -103,9 +101,9 @@ header {text-align: center;}
 
 </style>
 
-</head>     
-<body>
+{% endblock %}   
 
+{% block content %}
 <header >
         <form autocomplete="off" method="post" action="{{ url_for('bowling') }}">
 		  <div class="autocomplete" style="width:300px;">
@@ -118,7 +116,7 @@ header {text-align: center;}
 		</form>
 </header>
 
-Bolwer Name - {{inputPlayer}}
+Bowler Name - {{inputPlayer}}
 
 <div class="section">
 <div class="col grid_1_of_2">
@@ -451,5 +449,4 @@ autocomplete(document.getElementById("playerName"), players);
 autocomplete(document.getElementById("AgainstTeam"), teams);
 </script>
 
-</body>
-</html>
+{% endblock %}
