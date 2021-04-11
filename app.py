@@ -15,8 +15,8 @@ app = Flask(__name__)
 # 	submit = SubmitField('Search')
 
 
-@app.route('/batting', methods=['GET', 'POST'])
-def batting():
+@app.route('/batsmanAgainstteam', methods=['GET', 'POST'])
+def batsmanAgainstteam():
 	inputPlayer = request.form.get("playerName")
 	inputTeam = request.form.get("AgainstTeam")
 
@@ -69,11 +69,11 @@ def batting():
 
 	# res = json.dumps(res)
 
-	return render_template('batting.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
+	return render_template('batsmanAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
 
 
-@app.route('/bowling', methods=['GET', 'POST'])
-def bowling():
+@app.route('/bowlerAgainstteam', methods=['GET', 'POST'])
+def bowlerAgainstteam():
 	inputPlayer = request.form.get("playerName")
 	inputTeam = request.form.get("AgainstTeam")
 
@@ -122,7 +122,12 @@ def bowling():
 
 	res2 = res2.tail(20)
    
-	return render_template('bowling.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
+	return render_template('bowlerAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
+
+@app.route('/pitch', methods=['GET', 'POST'])
+def pitch():
+
+	return render_template('pitch.html')
 
 if __name__ == '__main__':
 	app.run(debug=True)

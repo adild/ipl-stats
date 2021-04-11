@@ -105,11 +105,8 @@ header {text-align: center;}
 
 {% block content %}
 
-</head>     
-<body>
-
 <header >
-        <form autocomplete="off" method="post" action="{{ url_for('batting') }}">
+        <form autocomplete="off" method="post" action="{{ url_for('batsmanAgainstteam') }}">
 		  <div class="autocomplete" style="width:300px;">
 		    <input id="playerName" type="text" name="playerName" placeholder="Player Name" required>
 		  </div>
@@ -474,6 +471,4 @@ autocomplete(document.getElementById("playerName"), players);
 autocomplete(document.getElementById("AgainstTeam"), teams);
 </script>
 
-</body>
-</html>
 {% endblock %}
