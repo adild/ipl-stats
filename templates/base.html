@@ -112,27 +112,26 @@
   <input type='checkbox' id='responsive-menu' onclick='updatemenu()'><label></label>
   <ul>
     <li><a href='http://'>Home</a></li>
-    <li><a href="{{ url_for('batting') }}">Batting</a></li>
 
     <!-- Future adding submenu -->
-<!--     <li><a class='dropdown-arrow' href='http://'>Batting</a>
+    <li><a class='dropdown-arrow' href='http://'>Batting</a>
       <ul class='sub-menus'>
-        <li><a href='http://'>Products Sub Menu 1</a></li>
-        <li><a href='http://'>Products Sub Menu 2</a></li>
-        <li><a href='http://'>Products Sub Menu 3</a></li>
-        <li><a href='http://'>Products Sub Menu 4</a></li>
+        <li><a href="{{ url_for('batsmanAgainstteam') }}">Batsman against team</a></li>
+        <li><a href='http://'>Batsman on ground</a></li>
+        <li><a href='http://'>Batman against bowler</a></li>
+        <!-- <li><a href='http://'>Products Sub Menu 4</a></li> -->
       </ul>
-     </li> -->
-    <li><a href="{{ url_for('bowling') }}">Bowling</a></li>
+     </li>
 
     <!-- Future adding submenu -->
-<!--     <li><a class='dropdown-arrow' href='http://'>Services</a>
+    <li><a class='dropdown-arrow' href='http://'>Bowling</a>
       <ul class='sub-menus'>
-        <li><a href='http://'>Services Sub Menu 1</a></li>
-        <li><a href='http://'>Services Sub Menu 2</a></li>
-        <li><a href='http://'>Services Sub Menu 3</a></li>
+        <li><a href="{{ url_for('bowlerAgainstteam') }}">Bowler against team</a></li>
+        <li><a href='http://'>Bowler on ground</a></li>
+        <li><a href='http://'>Bowler against batsman</a></li>
       </ul>
-    </li> -->
+    </li>
+    <li><a href="{{ url_for('pitch') }}">Pitch</a></li>
     </ul>
   </nav>
 
