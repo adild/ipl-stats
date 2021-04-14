@@ -112,6 +112,7 @@ def bowlerAgainstteam():
 
 	filt = (ball_df['bowler'] == inputPlayer) & \
     (ball_df['batting_team'] == inputTeam)
+
 	bowlerAgainstTeam = ball_df.loc[filt]
 
 	merge_result = bowlerAgainstTeam.merge(match_df, how='inner', on='id')
@@ -153,6 +154,38 @@ def bowlerAgainstteam():
 	res2 = res2.tail(20)
    
 	return render_template('bowlerAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer, inputTeam=inputTeam)
+
+@app.route('/bowlerOnGround', methods=['GET', 'POST'])
+def bowlerOnGround():
+	inputPlayer = request.form.get("playerName")
+	inputGround = request.form.get("groundName")
+
+	ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
+	match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
+
+	merge_result = ball_df.merge(match_df, how='inner', on='id')
+
+	filt = (merge_result['bowler'] == inputPlayer) \
+	& (merge_result['venue'] == inputGround)
+
+	batsmanOnGround = merge_result.loc[filt]
+
+	res4 = batsmanOnGround.groupby(
+        ['id']
+    ).agg(
+        bowler = ('bowler', 'unique'),
+        team_playing = ('bowling_team', 'unique'),
+        against = ('batting_team', 'unique'),
+        runs = ('total_runs', 'sum'),
+        balls = ('ball', 'count'),    
+        wickets = ('is_wicket', 'sum'),
+        date = ('date', 'unique'),
+        city = ('city', 'unique'),
+        venue = ('venue', 'unique')
+    )
+
+	return render_template('bowlerOnGround.html', res4=res4.values.tolist(), inputPlayer=inputPlayer, inputGround=inputGround)
+
 
 @app.route('/pitch', methods=['GET', 'POST'])
 def pitch():
