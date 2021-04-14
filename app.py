@@ -69,7 +69,37 @@ def batsmanAgainstteam():
 
 	# res = json.dumps(res)
 
-	return render_template('batsmanAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
+	return render_template('batsmanAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer, inputTeam=inputTeam)
+
+@app.route('/batsmanOnGround', methods=['GET', 'POST'])
+def batsmanOnGround():
+	inputPlayer = request.form.get("playerName")
+	inputGround = request.form.get("groundName")
+
+	ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
+	match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
+
+	merge_result = ball_df.merge(match_df, how='inner', on='id')
+
+	filt = (merge_result['batsman'] == inputPlayer) \
+	& (merge_result['venue'] == inputGround)
+
+	batsmanOnGround = merge_result.loc[filt]
+
+	res3 = batsmanOnGround.groupby(
+        ['id']
+    ).agg(
+        batman = ('batsman', 'unique'),
+        team_playing = ('batting_team', 'unique'),
+        against = ('bowling_team', 'unique'),
+        runs = ('batsman_runs', 'sum'),
+        balls = ('ball', 'count'),     
+        date = ('date', 'unique'),
+        city = ('city', 'unique'),
+        venue = ('venue', 'unique')
+    )
+
+	return render_template('batsmanOnGround.html', res3=res3.values.tolist(), inputPlayer=inputPlayer, inputGround=inputGround)
 
 
 @app.route('/bowlerAgainstteam', methods=['GET', 'POST'])
@@ -122,7 +152,7 @@ def bowlerAgainstteam():
 
 	res2 = res2.tail(20)
    
-	return render_template('bowlerAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer)
+	return render_template('bowlerAgainstteam.html', res=res.values.tolist(), res2=res2.values.tolist(), inputPlayer=inputPlayer, inputTeam=inputTeam)
 
 @app.route('/pitch', methods=['GET', 'POST'])
 def pitch():
