@@ -113,19 +113,20 @@ h3 {
 {% endblock %}   
 
 {% block content %}
+
 <header >
-        <form autocomplete="off" method="post" action="{{ url_for('bowlerAgainstteam') }}">
+        <form autocomplete="off" method="post" action="{{ url_for('bowlerOnGround') }}">
 		  <div class="autocomplete" style="width:300px;">
 		    <input id="playerName" type="text" name="playerName" placeholder="Player Name" required>
 		  </div>
 		    <div class="autocomplete" style="width:300px;">
-		    <input id="AgainstTeam" type="text" name="AgainstTeam" placeholder="Against Team" required>
+		    <input id="groundName" type="text" name="groundName" placeholder="Ground Name" required>
 		  </div>
 		  <input type="submit">
 		</form>
 </header>
 
-<h3>Bowler <span class="textdec">{{inputPlayer}}</span> Against Team <span class="textdec">{{ inputTeam }}</span></h2>
+<h3>Bowler <span class="textdec">{{inputPlayer}}</span> on Ground <span class="textdec">{{ inputGround }}</span></h2>
 
 <div class="section">
 <div class="col grid_1_of_2">
@@ -157,67 +158,7 @@ h3 {
 						vanue
 					</th>
 				</tr>
-				{% for i in res[::-1] %}
-				<tr>
-					<td>
-						{{i[1]}}
-					</td>
-					<td>
-						{{i[2]}}
-					</td>
-					<td>
-						{{i[3]}}
-					</td>
-					<td>
-						{{i[4]}}
-					</td>
-					<td>
-						{{i[5]}}
-					</td>
-					<td>
-						{{i[6]}}
-					</td>
-					<td>
-						{{i[7]}}
-					</td>
-					<td>
-						{{i[8]}}
-					</td>
-				</tr>
-				{%endfor%}
-			</table>
-
-</div>
-<div class="col grid_1_of_2"> 
-
-      <table class="w3-table-all w3-small">
-				<tr>
-					<th>
-						team_playing
-					</th>
-					<th>
-						against
-					</th>
-					<th>
-						runs
-					</th>
-					<th>
-						balls
-					</th>
-          <th>
-            wickets
-          </th>
-					<th>
-						date
-					</th>
-					<th>
-						city
-					</th>
-					<th>
-						vanue
-					</th>
-				</tr>
-				{% for i in res2[::-1] %}
+				{% for i in res4[::-1] %}
 				<tr>
 					<td>
 						{{i[1]}}
@@ -446,16 +387,32 @@ var players = ["AA Noffke", "Z Khan", "JH Kallis", "SB Joshi", "CL White",
        "Abdul Samad", "JR Hazlewood", "DA Warner", "CJ Green", "P Dubey",
        "Monu Kumar"];
 
-var teams = ["Royal Challengers Bangalore", "Kolkata Knight Riders",
-       "Chennai Super Kings", "Kings XI Punjab", "Delhi Daredevils",
-       "Rajasthan Royals", "Mumbai Indians", "Deccan Chargers",
-       "Kochi Tuskers Kerala", "Pune Warriors",
-       "Sunrisers Hyderabad", "Rising Pune Supergiants", "Gujarat Lions",
-       "Rising Pune Supergiant", "Delhi Capitals"]
+
+var Grounds = ["M Chinnaswamy Stadium",
+       "Punjab Cricket Association Stadium, Mohali", "Feroz Shah Kotla",
+       "Wankhede Stadium", "Eden Gardens", "Sawai Mansingh Stadium",
+       "Rajiv Gandhi International Stadium, Uppal",
+       "MA Chidambaram Stadium, Chepauk", "Dr DY Patil Sports Academy",
+       "Newlands", "St George's Park", "Kingsmead", "SuperSport Park",
+       "Buffalo Park", "New Wanderers Stadium", "De Beers Diamond Oval",
+       "OUTsurance Oval", "Brabourne Stadium",
+       "Sardar Patel Stadium, Motera", "Barabati Stadium",
+       "Vidarbha Cricket Association Stadium, Jamtha",
+       "Himachal Pradesh Cricket Association Stadium", "Nehru Stadium",
+       "Holkar Cricket Stadium",
+       "Dr. Y.S. Rajasekhara Reddy ACA-VDCA Cricket Stadium",
+       "Subrata Roy Sahara Stadium",
+       "Shaheed Veer Narayan Singh International Stadium",
+       "JSCA International Stadium Complex", "Sheikh Zayed Stadium",
+       "Sharjah Cricket Stadium", "Dubai International Cricket Stadium",
+       "Maharashtra Cricket Association Stadium",
+       "Punjab Cricket Association IS Bindra Stadium, Mohali",
+       "Saurashtra Cricket Association Stadium", "Green Park",
+       "M.Chinnaswamy Stadium"]
 
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("playerName"), players);
-autocomplete(document.getElementById("AgainstTeam"), teams);
+autocomplete(document.getElementById("groundName"), Grounds);
 </script>
 
 {% endblock %}
