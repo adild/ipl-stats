@@ -14,54 +14,72 @@ app = Flask(__name__)
 # 	language = SelectField(u'Programming Language', validate_choice=False)
 # 	submit = SubmitField('Search')
 
+@app.route('/')
+def home():
+	return render_template('home.html')
 
 @app.route('/batsmanAgainstteam', methods=['GET', 'POST'])
 def batsmanAgainstteam():
 	inputPlayer = request.form.get("playerName")
 	inputTeam = request.form.get("AgainstTeam")
 
-	ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
-	match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
+	# ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
+	# match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
 
-	filt = (ball_df['batsman'] == inputPlayer) \
-	& (ball_df['bowling_team'] == inputTeam) \
-	& ((ball_df['extras_type'] == 'noballs') | ((pd.isna(ball_df['extras_type']))))
+	# filt = (ball_df['batsman'] == inputPlayer) \
+	# & (ball_df['bowling_team'] == inputTeam) \
+	# & ((ball_df['extras_type'] == 'noballs') | ((pd.isna(ball_df['extras_type']))))
 
-	batsmanAgainstTeam = ball_df.loc[filt]
+	# batsmanAgainstTeam = ball_df.loc[filt]
 
-	merge_result = batsmanAgainstTeam.merge(match_df, how='inner', on='id')
+	# merge_result = batsmanAgainstTeam.merge(match_df, how='inner', on='id')
 
-	res = merge_result.groupby(
-        ['id']
+	# res = merge_result.groupby(
+ #        ['id']
+ #    ).agg(
+ #        batman=('batsman', 'unique'),
+ #        team_playing=('batting_team', 'unique'),
+ #        against=('bowling_team', 'unique'),
+ #        runs=('batsman_runs', 'sum'),
+ #        balls=('ball', 'count'),
+ #        date=('date', 'unique'),
+ #        city=('city', 'unique'),
+ #        venue=('venue', 'unique')
+ #    )
+
+	df = pd.read_csv('ipl-2021-data2/all_matches.csv')
+
+	filt = (df['striker'] == inputPlayer) \
+    & (df['bowling_team'] == inputTeam)
+
+	batsmanAgainstTeam = df.loc[filt]
+
+	res = batsmanAgainstTeam.groupby(
+        ['match_id']
     ).agg(
-        batman=('batsman', 'unique'),
-        team_playing=('batting_team', 'unique'),
-        against=('bowling_team', 'unique'),
-        runs=('batsman_runs', 'sum'),
-        balls=('ball', 'count'),
-        date=('date', 'unique'),
-        city=('city', 'unique'),
-        venue=('venue', 'unique')
+        batman = ('striker', 'unique'),
+        team_playing = ('batting_team', 'unique'),
+        against = ('bowling_team', 'unique'),
+        runs = ('runs_off_bat', 'sum'),
+        balls = ('ball', 'count'),     
+        date = ('start_date', 'unique'),
+        venue = ('venue', 'unique')
     )
 
-	filt2 = (ball_df['batsman'] == inputPlayer) \
-	& ((ball_df['extras_type'] == 'noballs') | ((pd.isna(ball_df['extras_type']))))
+	filt2 = (df['striker'] == inputPlayer)
 
-	batsmanAgainstAll = ball_df.loc[filt2]
+	batsmanAgainstAll = df.loc[filt2]
 
-	merge_result2 = batsmanAgainstAll.merge(match_df, how='inner', on='id')
-
-	res2 = merge_result2.groupby(
-        ['id']
+	res2 = batsmanAgainstAll.groupby(
+        ['match_id']
     ).agg(
-        batman=('batsman', 'unique'),
-        team_playing=('batting_team', 'unique'),
-        against=('bowling_team', 'unique'),
-        runs=('batsman_runs', 'sum'),
-        balls=('ball', 'count'),
-        date=('date', 'unique'),
-        city=('city', 'unique'),
-        venue=('venue', 'unique')
+        batman = ('striker', 'unique'),
+        team_playing = ('batting_team', 'unique'),
+        against = ('bowling_team', 'unique'),
+        runs = ('runs_off_bat', 'sum'),
+        balls = ('ball', 'count'),     
+        date = ('start_date', 'unique'),
+        venue = ('venue', 'unique')
     )
 
 	# data = []
@@ -76,26 +94,27 @@ def batsmanOnGround():
 	inputPlayer = request.form.get("playerName")
 	inputGround = request.form.get("groundName")
 
-	ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
-	match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
+	# ball_df = pd.read_csv('data/IPL Ball-by-Ball 2008-2020.csv')
+	# match_df = pd.read_csv('data/IPL Matches 2008-2020.csv')
 
-	merge_result = ball_df.merge(match_df, how='inner', on='id')
+	df = pd.read_csv('ipl-2021-data2/all_matches.csv')
 
-	filt = (merge_result['batsman'] == inputPlayer) \
-	& (merge_result['venue'] == inputGround)
+	# merge_result = ball_df.merge(match_df, how='inner', on='id')
 
-	batsmanOnGround = merge_result.loc[filt]
+	filt = (df['striker'] == inputPlayer) \
+	& (df['venue'] == inputGround)
+
+	batsmanOnGround = df.loc[filt]
 
 	res3 = batsmanOnGround.groupby(
-        ['id']
+        ['match_id']
     ).agg(
-        batman = ('batsman', 'unique'),
+        batman = ('striker', 'unique'),
         team_playing = ('batting_team', 'unique'),
         against = ('bowling_team', 'unique'),
-        runs = ('batsman_runs', 'sum'),
+        runs = ('runs_off_bat', 'sum'),
         balls = ('ball', 'count'),     
-        date = ('date', 'unique'),
-        city = ('city', 'unique'),
+        date = ('start_date', 'unique'),
         venue = ('venue', 'unique')
     )
 
