@@ -8,7 +8,7 @@
 <style>
 
   #menu {
-  background: #0099CC;
+  background: #000;
   color: #FFF;
   height: 45px;
   padding-left: 18px;
@@ -40,7 +40,7 @@
   margin-left: 5px;
 }
 #menu li a:hover {
-  color: #0099CC;
+  color: #000;
   background: #F2F2F2;
 }
 #menu input {
@@ -68,7 +68,7 @@
   height: auto;
   overflow: hidden;
   width: 170px;
-  background: #444444;
+  background: #000;
   position: absolute;
   z-index: 99;
   display: none;
@@ -85,8 +85,8 @@
   display: block
 }
 #menu ul.sub-menus a:hover{
-  background: #F2F2F2;
-  color: #444444;
+  background: #000;
+  color: #999;
 }
 @media screen and (max-width: 800px){
   #menu {position:relative}
@@ -111,7 +111,7 @@
   <nav id='menu'>
   <input type='checkbox' id='responsive-menu' onclick='updatemenu()'><label></label>
   <ul>
-    <li><a href='http://'>Home</a></li>
+    <li><a href="{{ url_for('home') }}">Home</a></li>
 
     <!-- Future adding submenu -->
     <li><a class='dropdown-arrow' href='http://'>Batting</a>
